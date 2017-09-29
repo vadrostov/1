@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ChN_The_Game.iml" filepath="$PROJECT_DIR$/ChN_The_Game.iml" />
+      <module fileurl="file://$PROJECT_DIR$/assets/ChN_The_Game-assets.iml" filepath="$PROJECT_DIR$/assets/ChN_The_Game-assets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/ChN_The_Game-core.iml" filepath="$PROJECT_DIR$/core/ChN_The_Game-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/ChN_The_Game-java.iml" filepath="$PROJECT_DIR$/java/ChN_The_Game-java.iml" />
+    </modules>
+  </component>
+</project>

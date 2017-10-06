@@ -2,6 +2,7 @@ package com.vrostov.chronon.envirmoment;
 
 import com.vrostov.chronon.ChNObject;
 import playn.core.Platform;
+import playn.core.Surface;
 import pythagoras.f.IDimension;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class ChNMainCity {
 
-    static class Stack {
+    public static class Stack {
         private int[] tiles;
         List<ChNObject> objects = new ArrayList<ChNObject>();
 
@@ -21,6 +22,7 @@ public class ChNMainCity {
         int height() {
             return tiles.length;
         }
+
     }
 
 
@@ -52,6 +54,10 @@ public class ChNMainCity {
 
     }
 
+
+    public void paint(Surface surface){
+
+    }
     public void addTile(int tx, int ty, int type){
         Stack stack=createStack(tx, ty);
         int lenght=stack.tiles.length;
@@ -72,6 +78,60 @@ public class ChNMainCity {
         }
 
         return world[ty * cityWidth + tx];
+    }
+
+    public void updatePhysics(double delta){
+        for (int ty=0; ty<cityHeight; ++ty){
+            for(int tx=0;tx<cityWidth; ++tx){
+                updatePhysics(stack(tx, ty), delta);
+            }
+        }
+    }
+
+    private Stack stackForObject(ChNObject o) {
+        if ((o.getPosition().getX() < 0) || (o.getPosition().getY() < 0) || (o.getPosition().getX() >= cityWidth) || (o.getPosition().getY() >= cityHeight)) {
+            return EMPTY_STACK;
+        }
+
+        return stack((int) o.getPosition().getX(), (int) o.getPosition().getY());
+    }
+
+    public void addObject(ChNObject o) {
+        Stack stack = stackForObject(o);
+        stack.objects.add(o);
+        o.setStack(stack);
+    }
+
+
+    private Stack stack(int tx, int ty) {
+        if ((tx < 0) || (tx >= cityWidth) || (ty < 0) || (ty >= cityHeight)) {
+            return EMPTY_STACK;
+        }
+
+        return world[ty * cityWidth + tx];
+    }
+
+    private void updatePhysics(Stack stack, double delta){
+
+        for(int i=0;i<stack.objects.size();++i){
+            ChNObject chNObject=stack.objects.get(i);
+            updatePhysics(chNObject, delta);
+
+
+        }
+    }
+
+    private void updatePhysics(ChNObject chNObject, double delta){
+        chNObject.setVx(chNObject.getAx()*delta);
+        chNObject.setVy(chNObject.getAy()*delta);
+        chNObject.setVz(chNObject.getAz()*delta);
+        moveBy(chNObject, chNObject.getVx(),chNObject.getVy(), chNObject.getVz());
+
+    }
+
+
+    private void moveBy(ChNObject chNObject, double dx, double dy, double dz){
+
     }
 
 }

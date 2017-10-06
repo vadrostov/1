@@ -30,8 +30,11 @@ public class ChNMainCity {
 
     private static final int TILE_HEIGHT=100;
     private static final int TILE_WIDTH=100;
+    private static final int TILE_DEPTH=50;
     private static final Stack EMPTY_STACK;
     private static final int MAX_STACK_HEIGHT = 8;
+
+    private double viewOriginX, viewOriginY, viewOriginZ;
 
     static {
         EMPTY_STACK = new Stack();
@@ -42,8 +45,9 @@ public class ChNMainCity {
     Platform platform;
     private final IDimension viewSize;
     int cityWidth, cityHeight;
+    boolean loaded;
 
-    private Stack[] world;
+    private Stack[] city;
 
     public ChNMainCity(Platform platform, int width, int height) {
         this.platform = platform;
@@ -51,11 +55,52 @@ public class ChNMainCity {
         this.cityWidth=width;
         this.cityHeight=height;
 
+        this.city=new Stack[cityHeight*cityWidth];
+        int i=0;
+        for (int ty=0;ty<cityHeight;++ty){
+            for(int tx=0; tx<cityWidth;++tx){
+
+            }
+        }
 
     }
 
 
-    public void paint(Surface surface){
+    public void paint(Surface surface, float alpha){
+        if (!loaded) return;
+
+        int startX = (int) pixelToWorldX(surface, 0);
+        int endX = (int) pixelToWorldX(surface, viewSize.width());
+        if (startX < 0)
+            startX = 0;
+        if (endX < 0)
+            endX = 0;
+        if (startX >= cityWidth)
+            startX = cityWidth - 1;
+        if (endX >= cityWidth)
+            endX = cityWidth - 1;
+
+        int startY = (int) pixelToWorldY(surface, 0, 0);
+        int endY = (int) pixelToWorldY(surface, viewSize.height(), MAX_STACK_HEIGHT);
+        if (startY < 0)
+            startY = 0;
+        if (endY < 0)
+            endY = 0;
+        if (startY >= cityHeight)
+            startY = cityHeight - 1;
+        if (endY >= cityHeight)
+            endY = cityHeight - 1;
+
+        for (int z=0; z<MAX_STACK_HEIGHT; ++z){
+            for (int y=startY; y<endY;++y){
+                for (int x=startX; x<endX; ++x){
+
+
+                }
+            }
+
+
+        }
 
     }
     public void addTile(int tx, int ty, int type){
@@ -77,7 +122,7 @@ public class ChNMainCity {
             return EMPTY_STACK;
         }
 
-        return world[ty * cityWidth + tx];
+        return city[ty * cityWidth + tx];
     }
 
     public void updatePhysics(double delta){
@@ -86,6 +131,12 @@ public class ChNMainCity {
                 updatePhysics(stack(tx, ty), delta);
             }
         }
+    }
+
+    public void setViewOrigin(int x, int y, int z){
+        viewOriginX=x;
+        viewOriginY=y;
+        viewOriginZ=z;
     }
 
     private Stack stackForObject(ChNObject o) {
@@ -108,7 +159,7 @@ public class ChNMainCity {
             return EMPTY_STACK;
         }
 
-        return world[ty * cityWidth + tx];
+        return city[ty * cityWidth + tx];
     }
 
     private void updatePhysics(Stack stack, double delta){
@@ -119,6 +170,18 @@ public class ChNMainCity {
 
 
         }
+    }
+
+    private double pixelToWorldX(Surface surf, float x) {
+        double center = viewSize.width() * 0.5;
+        return (int) (((viewOriginX * TILE_WIDTH) + x - center) / TILE_WIDTH);
+    }
+
+    private double pixelToWorldY(Surface surf, float y, double z) {
+        double center = viewSize.height() * 0.5;
+        return (y + (viewOriginY * TILE_HEIGHT - viewOriginZ * TILE_DEPTH)
+                + (z * TILE_DEPTH) - center)
+                / TILE_HEIGHT;
     }
 
     private void updatePhysics(ChNObject chNObject, double delta){

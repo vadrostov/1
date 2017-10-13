@@ -39,6 +39,19 @@ public class ChNObject {
         return position;
     }
 
+    public double x(double alpha) {
+        return position.getX() * alpha + oldPosition.getX()* (1.0f - alpha);
+    }
+
+    public double y(double alpha) {
+        return position.getY() * alpha + oldPosition.getY()* (1.0f - alpha);
+    }
+
+    public double z(double alpha) {
+        return position.getZ() * alpha + oldPosition.getZ()* (1.0f - alpha);
+    }
+
+
     public void setPosition(ChNObjectPosition position) {
         this.position = position;
     }

@@ -135,6 +135,16 @@ public class ChNMainCity {
     }
 
     private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
+        for(ChNObject o: stack.objects){
+            if ((int)o.getPosition().getZ()== tz){
+                int px=worldYoPixelX(surface, o.x(alpha));
+                int py=worldToPixelY(surface,o.x(alpha), o.z(alpha));
+                float baseX=o.tile.width()/2;
+                float baseY=o.tile.height()-TILE_BASE;
+                surface.draw(o.tile, px-baseX, py-baseY);
+
+            }
+        }
 
     }
 

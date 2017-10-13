@@ -23,6 +23,8 @@ public class ChNObjectPosition {
         return x;
     }
 
+
+
     public void setX(int x) {
         this.x = x;
     }

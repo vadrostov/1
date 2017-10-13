@@ -277,6 +277,19 @@ public class ChNMainCity {
 
 
     private void moveBy(ChNObject chNObject, double dx, double dy, double dz){
+        int tx=(int) chNObject.getPosition().getX(), ty=(int) chNObject.getPosition().getY();
+        int hc=(int) chNObject.getPosition().getZ();
+        int heightnorth=height(tx, ty-1);
+        int heightsouth=height(tx, ty+1);
+        int heightwest=height(tx-1, ty);
+        int heighteast=height(tx+1,ty);
+        int heightsoutheast=height(tx+1, ty+1);
+        int heightnortheast=height(tx+1, ty-1);
+        int heightnorthwest=height(tx-1, ty-1);
+        int heightsouthwest=height(tx-1, ty+1);
+        double left=chNObject.getPosition().getX()+dx-chNObject.getR();
+
+
 
     }
 

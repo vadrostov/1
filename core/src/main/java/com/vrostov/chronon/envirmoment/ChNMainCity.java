@@ -287,7 +287,10 @@ public class ChNMainCity {
         int heightnortheast=height(tx+1, ty-1);
         int heightnorthwest=height(tx-1, ty-1);
         int heightsouthwest=height(tx-1, ty+1);
-        double left=chNObject.getPosition().getX()+dx-chNObject.getR();
+        double left=chNObject.getPosition().getX()+dx-chNObject.getR(), right=chNObject.getPosition().getX()+dx+chNObject.getR();
+        double top=chNObject.getPosition().getY()+dy-chNObject.getR(), bottom=chNObject.getPosition().getY()+dy+chNObject.getR();
+        boolean pastLeft=left<tx, pastTop=top<ty;
+        boolean pastRight=right>tx+1, pastBottom=bottom>ty+1;
 
 
 

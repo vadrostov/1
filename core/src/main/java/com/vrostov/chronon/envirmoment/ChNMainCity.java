@@ -31,7 +31,7 @@ public class ChNMainCity {
     }
 
 
-    private static final String[] tilesNames=new String[]{"block", "asphalt", "yelllowgrass", "greengrass", "water"};
+    private static final String[] tilesNames=new String[]{"block_wood", "block_wood"};
     private final Tile[] tiles=new Tile[tilesNames.length];
 
     private static final int TILE_HEIGHT=100;
@@ -73,13 +73,16 @@ public class ChNMainCity {
         int i=0;
         for (int ty=0;ty<cityHeight;++ty){
             for(int tx=0; tx<cityWidth;++tx){
-
+                this.city[i]=new Stack();
+                city[i].tiles=new int[0];
+                ++i;
             }
         }
 
     }
 
 
+    //метод отрисовывает мир
     public void paint(Surface surface, float alpha){
         if (!loaded) return;
 
@@ -138,6 +141,7 @@ public class ChNMainCity {
 
     }
 
+    //отрисовывает объекты на поверхности.
     private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
         for(ChNObject o: stack.objects){
             if ((int)o.getPosition().getZ()== tz){
@@ -152,10 +156,12 @@ public class ChNMainCity {
 
     }
 
+    //вычисляет высоту для плитки по координатам
     private int height(int tx, int ty) {
         return stack(tx, ty).height();
     }
 
+    //добавляет плитку в
     public void addTile(int tx, int ty, int type){
         Stack stack=createStack(tx, ty);
         int lenght=stack.tiles.length;
@@ -341,12 +347,20 @@ public class ChNMainCity {
 
         }
 
+        //обновляем позицию объекта
+        chNObject.updatePosition((int)(chNObject.getPosition().getX()+dx), (int)(chNObject.getPosition().getY()+dy), chNObject.getPosition().getZ());
+
+        //края мира
+
+
+        // TODO коллизии для высоты (как минимум крыши, возможно прыжки/полет)
 
     }
 
 
+    //возвращает строковый путь к ресурсу-изображению
     private String imageRes(String name) {
-        return "images/" + name + ".png";
+        return "./assets/src/main/resources/images" + name + ".png";
     }
 
 }

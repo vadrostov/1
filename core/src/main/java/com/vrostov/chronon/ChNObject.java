@@ -56,6 +56,10 @@ public class ChNObject {
         this.position = position;
     }
 
+    public void updatePosition(int x, int y, int z){
+        position.setPosition(x, y, z);
+    }
+
     public ChNObjectPosition getOldPosition() {
         return oldPosition;
     }

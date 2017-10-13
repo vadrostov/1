@@ -45,7 +45,7 @@ public class ChNGame extends SceneGame{
             }
         });
 
-        plat.assets().getImage("/images/chn.png").state.onSuccess(new Slot<Image>() {
+        plat.assets().getImage("C:/Users/vrostov/Documents/ChN_The_Game/assets/src/main/resources/images/chn.png").state.onSuccess(new Slot<Image>() {
             public void onEmit(Image image) {
                 mainPers=new ChNObject(image.texture());
                 mainPers.setR(0.3);

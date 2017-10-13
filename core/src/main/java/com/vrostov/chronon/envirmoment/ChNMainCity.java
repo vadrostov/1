@@ -42,6 +42,10 @@ public class ChNMainCity {
     private static final Stack EMPTY_STACK;
     private static final int MAX_STACK_HEIGHT = 8;
 
+    private static final double GRAVITY = -10.0;
+    private static final double RESTITUTION = 0.4;
+    private static final double FRICTION = 10.0;
+
     private double viewOriginX, viewOriginY, viewOriginZ;
 
     static {
@@ -291,6 +295,33 @@ public class ChNMainCity {
         double top=chNObject.getPosition().getY()+dy-chNObject.getR(), bottom=chNObject.getPosition().getY()+dy+chNObject.getR();
         boolean pastLeft=left<tx, pastTop=top<ty;
         boolean pastRight=right>tx+1, pastBottom=bottom>ty+1;
+
+        //Коллизии - проверяем возможность перемещения
+
+        //Юг, север, запад, восток
+        if (pastLeft){
+            if (heightwest>hc){
+                dx=tx+chNObject.getR()-chNObject.getPosition().getX();
+                chNObject.setVx(-chNObject.getPosition().getX()*RESTITUTION);
+            }
+        } else if (pastRight){
+            if (heighteast>hc){
+                dx=tx+1-chNObject.getR()-chNObject.getPosition().getX();
+                chNObject.setVx(-chNObject.getPosition().getX()*RESTITUTION);
+            }
+        }
+
+        if (pastTop){
+            if(heightnorth>hc){
+                dy=ty+chNObject.getR()-chNObject.getPosition().getY();
+                chNObject.setVy(-chNObject.getPosition().getY()*RESTITUTION);
+            }
+        } else if (pastBottom){
+            if (heightsouth>hc){
+                dy=ty+1-chNObject.getR()-chNObject.getPosition().getY();
+                chNObject.setVy(-chNObject.getPosition().getY()*RESTITUTION);
+            }
+        }
 
 
 

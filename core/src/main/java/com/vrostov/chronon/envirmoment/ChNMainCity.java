@@ -323,6 +323,23 @@ public class ChNMainCity {
             }
         }
 
+        //северо-восток, северо-запад, юго-восток, юго-запад
+        // ~TODO
+        if (pastTop&&pastRight){
+
+        }
+
+        if (pastTop&&pastLeft){
+
+        }
+
+        if (pastBottom&&pastRight){
+
+        }
+
+        if (pastBottom&&pastLeft){
+
+        }
 
 
     }

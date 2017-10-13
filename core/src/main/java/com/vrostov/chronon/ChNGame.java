@@ -38,11 +38,14 @@ public class ChNGame extends SceneGame{
         rootLayer.add(gameLayer=new Layer() {
             @Override
             protected void paintImpl(Surface surface) {
+                if (mainPers!= null) city.setViewOrigin(mainPers.getPosition().getX(),mainPers.getPosition().getY(), mainPers.getPosition().getZ());
+                surface.clear();
+                city.paint(surface, alpha);
 
             }
         });
 
-        plat.assets().getImage("").state.onSuccess(new Slot<Image>() {
+        plat.assets().getImage("/images/chn.png").state.onSuccess(new Slot<Image>() {
             public void onEmit(Image image) {
                 mainPers=new ChNObject(image.texture());
                 mainPers.setR(0.3);

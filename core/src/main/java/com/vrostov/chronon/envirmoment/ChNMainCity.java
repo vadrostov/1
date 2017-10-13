@@ -1,9 +1,14 @@
 package com.vrostov.chronon.envirmoment;
 
 import com.vrostov.chronon.ChNObject;
+import playn.core.Image;
 import playn.core.Platform;
 import playn.core.Surface;
+import playn.core.Tile;
 import pythagoras.f.IDimension;
+import react.RFuture;
+import react.Slot;
+import react.UnitSlot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +32,13 @@ public class ChNMainCity {
 
 
     private static final String[] tilesNames=new String[]{"block", "asphalt", "yelllowgrass", "greengrass", "water"};
+    private final Tile[] tiles=new Tile[tilesNames.length];
 
     private static final int TILE_HEIGHT=100;
     private static final int TILE_WIDTH=100;
     private static final int TILE_DEPTH=50;
+    private static final int TILE_BASE = 90;
+    private static final int TILE_IMAGE_HEIGHT = 190;
     private static final Stack EMPTY_STACK;
     private static final int MAX_STACK_HEIGHT = 8;
 
@@ -54,6 +62,8 @@ public class ChNMainCity {
         this.viewSize=platform.graphics().viewSize;
         this.cityWidth=width;
         this.cityHeight=height;
+
+        loadImg();
 
         this.city=new Stack[cityHeight*cityWidth];
         int i=0;
@@ -95,7 +105,27 @@ public class ChNMainCity {
             for (int y=startY; y<endY;++y){
                 for (int x=startX; x<endX; ++x){
 
+                    Stack stack=city[y*cityWidth+x];
 
+                    if(z<stack.height()){
+                        if((z<stack.height()-1)&&(height(x, y+1)>z)){
+                            continue;
+                        }
+
+                        int px=worldYoPixelX(surface, x);
+                        int py=worldToPixelY(surface, y,z)-TILE_BASE;
+                        if ((px > viewSize.width()) || (py > viewSize.height())
+                                || (px + TILE_WIDTH < 0) || (py + TILE_IMAGE_HEIGHT < 0)) {
+                            continue;
+                        }
+
+                        surface.draw(tiles[stack.tiles[z]], px, py);
+
+
+                    }
+                    else if (z>stack.height()){
+                        paintObjects(surface, stack, z, alpha);
+                    }
                 }
             }
 
@@ -103,6 +133,15 @@ public class ChNMainCity {
         }
 
     }
+
+    private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
+
+    }
+
+    private int height(int tx, int ty) {
+        return stack(tx, ty).height();
+    }
+
     public void addTile(int tx, int ty, int type){
         Stack stack=createStack(tx, ty);
         int lenght=stack.tiles.length;
@@ -177,6 +216,16 @@ public class ChNMainCity {
         return (int) (((viewOriginX * TILE_WIDTH) + x - center) / TILE_WIDTH);
     }
 
+    private int worldYoPixelX(Surface surface, double x){
+        double center=viewSize.width()*0.5;
+        return (int) (center-(viewOriginX*TILE_WIDTH)+x*TILE_WIDTH);
+    }
+
+    private int worldToPixelY(Surface surface, double y, double z){
+        double center=viewSize.height()*0.5;
+        return (int) (center-(viewOriginY*TILE_HEIGHT-viewOriginZ*TILE_DEPTH)+y*TILE_HEIGHT-z*TILE_DEPTH);
+    }
+
     private double pixelToWorldY(Surface surf, float y, double z) {
         double center = viewSize.height() * 0.5;
         return (y + (viewOriginY * TILE_HEIGHT - viewOriginZ * TILE_DEPTH)
@@ -192,9 +241,38 @@ public class ChNMainCity {
 
     }
 
+    private void loadImg(){
+
+        List<RFuture<Image>> wait=new ArrayList<RFuture<Image>>();
+
+        for(int i=0;i<tiles.length; ++i){
+            final int idx=1;
+            Image tile=platform.assets().getImage(imageRes(tilesNames[i]));
+            tile.state.onSuccess(new Slot<Image>() {
+                public void onEmit(Image image) {
+                    tiles[idx]=image.texture();
+                }
+            });
+            wait.add(tile.state);
+        }
+
+        RFuture.sequence(wait).onSuccess(new UnitSlot() {
+            @Override
+            public void onEmit() {
+                loaded=true;
+            }
+        });
+
+    }
+
 
     private void moveBy(ChNObject chNObject, double dx, double dy, double dz){
 
+    }
+
+
+    private String imageRes(String name) {
+        return "images/" + name + ".png";
     }
 
 }

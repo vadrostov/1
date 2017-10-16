@@ -1,12 +1,10 @@
 package com.vrostov.chronon.envirmoment;
 
 import com.vrostov.chronon.ChNObject;
-import playn.core.Image;
-import playn.core.Platform;
-import playn.core.Surface;
-import playn.core.Tile;
+import playn.core.*;
 import pythagoras.f.IDimension;
 import react.RFuture;
+import react.Signal;
 import react.Slot;
 import react.UnitSlot;
 
@@ -34,13 +32,15 @@ public class ChNMainCity {
     private static final String[] tilesNames=new String[]{"block_wood", "block_wood"};
     private final Tile[] tiles=new Tile[tilesNames.length];
 
+
+
     private static final int TILE_HEIGHT=100;
-    private static final int TILE_WIDTH=100;
-    private static final int TILE_DEPTH=50;
+    private static final int TILE_WIDTH=80;
+    private static final int TILE_DEPTH=40;
     private static final int TILE_BASE = 90;
-    private static final int TILE_IMAGE_HEIGHT = 190;
+    private static final int TILE_IMAGE_HEIGHT = 170;
     private static final Stack EMPTY_STACK;
-    private static final int MAX_STACK_HEIGHT = 8;
+    private static final int MAX_STACK_HEIGHT = 35;
 
     private static final double GRAVITY = -10.0;
     private static final double RESTITUTION = 0.4;
@@ -114,20 +114,29 @@ public class ChNMainCity {
 
                     Stack stack=city[y*cityWidth+x];
 
+
                     if(z<stack.height()){
                         if((z<stack.height()-1)&&(height(x, y+1)>z)){
                             continue;
                         }
 
-                        int px=worldYoPixelX(surface, x);
+                        int px= worldToPixelX(surface, x);
                         int py=worldToPixelY(surface, y,z)-TILE_BASE;
                         if ((px > viewSize.width()) || (py > viewSize.height())
                                 || (px + TILE_WIDTH < 0) || (py + TILE_IMAGE_HEIGHT < 0)) {
                             continue;
                         }
 
-                        surface.draw(tiles[stack.tiles[z]], px, py);
 
+
+                        try{
+                        Tile tile=tiles[stack.tiles[z]];
+
+                        surface.draw(tile, px, py);}
+                        catch (ArrayIndexOutOfBoundsException e){
+                            e.printStackTrace();
+                            System.out.println(stack.tiles[z]);
+                        }
 
                     }
                     else if (z>stack.height()){
@@ -145,7 +154,7 @@ public class ChNMainCity {
     private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
         for(ChNObject o: stack.objects){
             if ((int)o.getPosition().getZ()== tz){
-                int px=worldYoPixelX(surface, o.x(alpha));
+                int px= worldToPixelX(surface, o.x(alpha));
                 int py=worldToPixelY(surface,o.x(alpha), o.z(alpha));
                 float baseX=o.tile.width()/2;
                 float baseY=o.tile.height()-TILE_BASE;
@@ -236,7 +245,7 @@ public class ChNMainCity {
         return (int) (((viewOriginX * TILE_WIDTH) + x - center) / TILE_WIDTH);
     }
 
-    private int worldYoPixelX(Surface surface, double x){
+    private int worldToPixelX(Surface surface, double x){
         double center=viewSize.width()*0.5;
         return (int) (center-(viewOriginX*TILE_WIDTH)+x*TILE_WIDTH);
     }
@@ -254,10 +263,12 @@ public class ChNMainCity {
     }
 
     private void updatePhysics(ChNObject chNObject, double delta){
-        chNObject.setVx(chNObject.getAx()*delta);
-        chNObject.setVy(chNObject.getAy()*delta);
-        chNObject.setVz(chNObject.getAz()*delta);
-        moveBy(chNObject, chNObject.getVx(),chNObject.getVy(), chNObject.getVz());
+
+
+        chNObject.vx+=chNObject.getAx()*delta;
+        chNObject.vy+=chNObject.getAy()*delta;
+      //  chNObject.setVz(chNObject.getAz()*delta);
+        moveBy(chNObject, chNObject.getVx(),chNObject.getVy()/**, chNObject.getVz()*/);
 
     }
 
@@ -286,7 +297,7 @@ public class ChNMainCity {
     }
 
 
-    private void moveBy(ChNObject chNObject, double dx, double dy, double dz){
+    private void moveBy(ChNObject chNObject, double dx, double dy/*, double dz*/){
         int tx=(int) chNObject.getPosition().getX(), ty=(int) chNObject.getPosition().getY();
         int hc=(int) chNObject.getPosition().getZ();
         int heightnorth=height(tx, ty-1);
@@ -305,7 +316,7 @@ public class ChNMainCity {
         //Коллизии - проверяем возможность перемещения
 
         //Юг, север, запад, восток
-        if (pastLeft){
+    /*    if (pastLeft){
             if (heightwest>hc){
                 dx=tx+chNObject.getR()-chNObject.getPosition().getX();
                 chNObject.setVx(-chNObject.getPosition().getX()*RESTITUTION);
@@ -327,7 +338,7 @@ public class ChNMainCity {
                 dy=ty+1-chNObject.getR()-chNObject.getPosition().getY();
                 chNObject.setVy(-chNObject.getPosition().getY()*RESTITUTION);
             }
-        }
+        }*/
 
         //северо-восток, северо-запад, юго-восток, юго-запад
         // ~TODO
@@ -350,6 +361,7 @@ public class ChNMainCity {
         //обновляем позицию объекта
         chNObject.updatePosition((int)(chNObject.getPosition().getX()+dx), (int)(chNObject.getPosition().getY()+dy), chNObject.getPosition().getZ());
 
+
         //края мира
 
 
@@ -360,7 +372,7 @@ public class ChNMainCity {
 
     //возвращает строковый путь к ресурсу-изображению
     private String imageRes(String name) {
-        return "./assets/src/main/resources/images" + name + ".png";
+        return "/images/" + name + ".png";
     }
 
 }

@@ -13,11 +13,12 @@ import com.vrostov.chronon.envirmoment.ChNMainCity.Stack;
 public class ChNObject {
 
     public Tile tile;
-    public ChNObjectPosition position;
-    public ChNObjectPosition oldPosition;
 
-    private double vx, vy, vz;
-    private double ax, ay, az;
+
+    public double vx, vy, vz;
+    public double ax, ay, az;
+    public double ox, oy, oz;
+    public double x,y,z;
     private double r;
     private Stack stack;
     int lastUpdated;
@@ -25,6 +26,7 @@ public class ChNObject {
 
     public ChNObject(Tile tile) {
         this.tile = tile;
+
     }
 
     public Stack getStack() {
@@ -35,38 +37,29 @@ public class ChNObject {
         this.stack = stack;
     }
 
-    public ChNObjectPosition getPosition() {
-        return position;
-    }
+
 
     public double x(double alpha) {
-        return position.getX() * alpha + oldPosition.getX()* (1.0f - alpha);
+        return x * alpha + ox* (1.0f - alpha);
     }
 
     public double y(double alpha) {
-        return position.getY() * alpha + oldPosition.getY()* (1.0f - alpha);
+        return y * alpha + oy* (1.0f - alpha);
     }
 
     public double z(double alpha) {
-        return position.getZ() * alpha + oldPosition.getZ()* (1.0f - alpha);
+        return z * alpha + oz* (1.0f - alpha);
     }
 
 
-    public void setPosition(ChNObjectPosition position) {
-        this.position = position;
+
+    public void setPos(int x, int y, int z){
+        this.x=x;
+        this.y=y;
+        this.z=z;
     }
 
-    public void updatePosition(int x, int y, int z){
-        position.setPosition(x, y, z);
-    }
 
-    public ChNObjectPosition getOldPosition() {
-        return oldPosition;
-    }
-
-    public void setOldPosition(ChNObjectPosition oldPosition) {
-        this.oldPosition = oldPosition;
-    }
 
     public double getVx() {
         return vx;

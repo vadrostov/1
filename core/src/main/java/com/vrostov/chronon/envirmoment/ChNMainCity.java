@@ -1,6 +1,9 @@
 package com.vrostov.chronon.envirmoment;
 
 import com.vrostov.chronon.ChNObject;
+import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
+import com.vrostov.chronon.envirmoment.maintnance.CityPainter;
+import com.vrostov.chronon.envirmoment.maintnance.CityPhysics;
 import playn.core.*;
 import pythagoras.f.IDimension;
 import react.RFuture;
@@ -32,6 +35,10 @@ public class ChNMainCity {
     private static final String[] tilesNames=new String[]{"block_wood", "block_wood"};
     private final Tile[] tiles=new Tile[tilesNames.length];
 
+    private MainCityValuesBean values;
+
+    private CityPainter painter;
+    private CityPhysics physics;
 
 
     private static final int TILE_HEIGHT=100;
@@ -41,6 +48,8 @@ public class ChNMainCity {
     private static final int TILE_IMAGE_HEIGHT = 170;
     private static final Stack EMPTY_STACK;
     private static final int MAX_STACK_HEIGHT = 35;
+
+    private static final int OBJECT_BASE=30;
 
     private static final double GRAVITY = -10.0;
     private static final double RESTITUTION = 0.4;
@@ -66,6 +75,9 @@ public class ChNMainCity {
         this.viewSize=platform.graphics().viewSize;
         this.cityWidth=width;
         this.cityHeight=height;
+        values=new MainCityValuesBean(viewSize);
+        this.painter=new CityPainter(values,platform);
+        this.physics=new CityPhysics();
 
         loadImg();
 
@@ -84,7 +96,8 @@ public class ChNMainCity {
 
     //метод отрисовывает мир
     public void paint(Surface surface, float alpha){
-        if (!loaded) return;
+      painter.paint(surface,alpha);
+       /* if (!loaded) return;
 
         int startX = (int) pixelToWorldX(surface, 0);
         int endX = (int) pixelToWorldX(surface, viewSize.width());
@@ -146,24 +159,27 @@ public class ChNMainCity {
             }
 
 
-        }
+        }*/
 
     }
 
     //отрисовывает объекты на поверхности.
-    private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
+    /*private void paintObjects(Surface surface, Stack stack, int tz, float alpha){
         for(ChNObject o: stack.objects){
-            if ((int)o.getPosition().getZ()== tz){
-                int px= worldToPixelX(surface, o.x(alpha));
+            if ((int)o.z== tz){
+                //int px= worldToPixelX(surface, o.x(alpha));
+                double center=viewSize.width()*0.5;
+                double oxal=o.x(alpha);
+                int px= (int) (center-(viewOriginX*TILE_WIDTH)+o.x(alpha)*TILE_WIDTH);
                 int py=worldToPixelY(surface,o.x(alpha), o.z(alpha));
                 float baseX=o.tile.width()/2;
-                float baseY=o.tile.height()-TILE_BASE;
+                float baseY=o.tile.height()-OBJECT_BASE;
                 surface.draw(o.tile, px-baseX, py-baseY);
 
             }
         }
 
-    }
+    }*/
 
     //вычисляет высоту для плитки по координатам
     private int height(int tx, int ty) {
@@ -193,13 +209,13 @@ public class ChNMainCity {
         return city[ty * cityWidth + tx];
     }
 
-    public void updatePhysics(double delta){
+    /*public void updatePhysics(double delta){
         for (int ty=0; ty<cityHeight; ++ty){
             for(int tx=0;tx<cityWidth; ++tx){
                 updatePhysics(stack(tx, ty), delta);
             }
         }
-    }
+    }*/
 
     public void setViewOrigin(int x, int y, int z){
         viewOriginX=x;
@@ -208,11 +224,11 @@ public class ChNMainCity {
     }
 
     private Stack stackForObject(ChNObject o) {
-        if ((o.getPosition().getX() < 0) || (o.getPosition().getY() < 0) || (o.getPosition().getX() >= cityWidth) || (o.getPosition().getY() >= cityHeight)) {
+        if ((o.x < 0) || (o.y < 0) || (o.x >= cityWidth) || (o.y >= cityHeight)) {
             return EMPTY_STACK;
         }
 
-        return stack((int) o.getPosition().getX(), (int) o.getPosition().getY());
+        return stack((int) o.x, (int) o.y);
     }
 
     public void addObject(ChNObject o) {
@@ -230,7 +246,7 @@ public class ChNMainCity {
         return city[ty * cityWidth + tx];
     }
 
-    private void updatePhysics(Stack stack, double delta){
+  /*  private void updatePhysics(Stack stack, double delta){
 
         for(int i=0;i<stack.objects.size();++i){
             ChNObject chNObject=stack.objects.get(i);
@@ -238,9 +254,9 @@ public class ChNMainCity {
 
 
         }
-    }
+    }*/
 
-    private double pixelToWorldX(Surface surf, float x) {
+    /*private double pixelToWorldX(Surface surf, float x) {
         double center = viewSize.width() * 0.5;
         return (int) (((viewOriginX * TILE_WIDTH) + x - center) / TILE_WIDTH);
     }
@@ -260,17 +276,17 @@ public class ChNMainCity {
         return (y + (viewOriginY * TILE_HEIGHT - viewOriginZ * TILE_DEPTH)
                 + (z * TILE_DEPTH) - center)
                 / TILE_HEIGHT;
-    }
+    }*/
 
-    private void updatePhysics(ChNObject chNObject, double delta){
+/*    private void updatePhysics(ChNObject chNObject, double delta){
 
 
         chNObject.vx+=chNObject.getAx()*delta;
         chNObject.vy+=chNObject.getAy()*delta;
       //  chNObject.setVz(chNObject.getAz()*delta);
-        moveBy(chNObject, chNObject.getVx(),chNObject.getVy()/**, chNObject.getVz()*/);
+        moveBy(chNObject, chNObject.getVx(),chNObject.getVy()*//**, chNObject.getVz()*//*);
 
-    }
+    }*/
 
     private void loadImg(){
 
@@ -297,9 +313,9 @@ public class ChNMainCity {
     }
 
 
-    private void moveBy(ChNObject chNObject, double dx, double dy/*, double dz*/){
-        int tx=(int) chNObject.getPosition().getX(), ty=(int) chNObject.getPosition().getY();
-        int hc=(int) chNObject.getPosition().getZ();
+ /*   private void moveBy(ChNObject chNObject, double dx, double dy*//*, double dz*//*){
+        int tx=(int) chNObject.x, ty=(int) chNObject.y;
+        int hc=(int) chNObject.z;
         int heightnorth=height(tx, ty-1);
         int heightsouth=height(tx, ty+1);
         int heightwest=height(tx-1, ty);
@@ -308,15 +324,15 @@ public class ChNMainCity {
         int heightnortheast=height(tx+1, ty-1);
         int heightnorthwest=height(tx-1, ty-1);
         int heightsouthwest=height(tx-1, ty+1);
-        double left=chNObject.getPosition().getX()+dx-chNObject.getR(), right=chNObject.getPosition().getX()+dx+chNObject.getR();
-        double top=chNObject.getPosition().getY()+dy-chNObject.getR(), bottom=chNObject.getPosition().getY()+dy+chNObject.getR();
+        double left=chNObject.x+dx-chNObject.getR(), right=chNObject.x+dx+chNObject.getR();
+        double top=chNObject.y+dy-chNObject.getR(), bottom=chNObject.y+dy+chNObject.getR();
         boolean pastLeft=left<tx, pastTop=top<ty;
         boolean pastRight=right>tx+1, pastBottom=bottom>ty+1;
 
         //Коллизии - проверяем возможность перемещения
 
         //Юг, север, запад, восток
-    /*    if (pastLeft){
+    *//*    if (pastLeft){
             if (heightwest>hc){
                 dx=tx+chNObject.getR()-chNObject.getPosition().getX();
                 chNObject.setVx(-chNObject.getPosition().getX()*RESTITUTION);
@@ -338,7 +354,7 @@ public class ChNMainCity {
                 dy=ty+1-chNObject.getR()-chNObject.getPosition().getY();
                 chNObject.setVy(-chNObject.getPosition().getY()*RESTITUTION);
             }
-        }*/
+        }*//*
 
         //северо-восток, северо-запад, юго-восток, юго-запад
         // ~TODO
@@ -359,8 +375,8 @@ public class ChNMainCity {
         }
 
         //обновляем позицию объекта
-        chNObject.updatePosition((int)(chNObject.getPosition().getX()+dx), (int)(chNObject.getPosition().getY()+dy), chNObject.getPosition().getZ());
-
+        chNObject.x=chNObject.x+dx;
+        chNObject.y=chNObject.y+dy;
 
         //края мира
 
@@ -368,11 +384,18 @@ public class ChNMainCity {
         // TODO коллизии для высоты (как минимум крыши, возможно прыжки/полет)
 
     }
-
+*/
 
     //возвращает строковый путь к ресурсу-изображению
     private String imageRes(String name) {
         return "/images/" + name + ".png";
     }
 
+    public CityPainter getPainter() {
+        return painter;
+    }
+
+    public CityPhysics getPhysics() {
+        return physics;
+    }
 }

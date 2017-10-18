@@ -46,16 +46,16 @@ public class ChNGame extends SceneGame{
                     switch (keyEvent.key){
                         case W:
                             controlUp=keyEvent.down;
-                            return;
+                            break;
                         case A:
                             controlLeft=keyEvent.down;
-                            return;
+                            break;
                         case S:
                             controlDown=keyEvent.down;
-                            return;
+                            break;
                         case D:
                             controlRight=keyEvent.down;
-                            return;
+                            break;
                         default:
                             break;
                     }
@@ -63,10 +63,10 @@ public class ChNGame extends SceneGame{
             }
         });
 
-        int cx=5, cy=5;
+        int cx=16, cy=16;
         city=new ChNMainCity(plat, cy, cx);
-        for (int x=0; x<cx;++x){
-            for (int y=0;y<cy;++y){
+        for (int y=0; y<cy;++y){
+            for (int x=0;x<cx;++x){
                 city.addTile(x,y,1);
             }
         }
@@ -74,7 +74,7 @@ public class ChNGame extends SceneGame{
         rootLayer.add(gameLayer=new Layer() {
             @Override
             protected void paintImpl(Surface surface) {
-                if (mainPers!= null) city.setViewOrigin(mainPers.getPosition().getX(),mainPers.getPosition().getY(), mainPers.getPosition().getZ());
+                if (mainPers!= null) city.setViewOrigin((int)mainPers.x,(int)mainPers.y, (int)mainPers.z);
                 surface.clear();
                 city.paint(surface, alpha);
 
@@ -85,11 +85,11 @@ public class ChNGame extends SceneGame{
             public void onEmit(Image image) {
                 mainPers=new ChNObject(image.texture());
                 mainPers.setR(0.3);
-                mainPers.updatePosition(2,2,2);
+                mainPers.setPos(2,2,2);
                 city.addObject(mainPers);
                 update.connect(new Slot<Clock>() {
                     public void onEmit(Clock clock) {
-                        mainPers.setAxeleration(0.0, 0.0, 0.0);
+                        mainPers.setAxeleration(0, 0, 0);
                         if(controlLeft) mainPers.setAx(-1.0);
                         if(controlRight) mainPers.setAx(1.0);
                         if (controlDown) mainPers.setAy(1.0);
@@ -107,7 +107,7 @@ public class ChNGame extends SceneGame{
     @Override
     public void update(Clock clock) {
         super.update(clock);
-        city.updatePhysics(clock.dt/1000f);
+        city.getPhysics().updatePhysics(clock.dt/1000f);
     }
 
     @Override

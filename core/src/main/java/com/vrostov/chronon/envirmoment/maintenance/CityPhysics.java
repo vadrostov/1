@@ -1,6 +1,6 @@
 package com.vrostov.chronon.envirmoment.maintenance;
 
-import com.vrostov.chronon.ChNObject;
+import com.vrostov.chronon.objects.ChNObject;
 import com.vrostov.chronon.envirmoment.ChNMainCity;
 
 /**

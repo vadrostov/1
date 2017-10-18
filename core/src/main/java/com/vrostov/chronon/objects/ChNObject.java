@@ -1,4 +1,4 @@
-package com.vrostov.chronon;
+package com.vrostov.chronon.objects;
 
 import com.vrostov.chronon.objects.maintenance.behavior.MessagerBehavior;
 import com.vrostov.chronon.objects.maintenance.behavior.MoveBehavior;
@@ -15,9 +15,6 @@ public class ChNObject {
 
     public Tile tile;
 
-
-    public double vx, vy, vz;
-    public double ax, ay, az;
     public double ox, oy, oz;
     public double x,y,z;
     private double r;

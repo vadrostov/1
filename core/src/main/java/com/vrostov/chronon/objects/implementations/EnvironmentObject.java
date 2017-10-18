@@ -1,6 +1,7 @@
 package com.vrostov.chronon.objects.implementations;
 
-import com.vrostov.chronon.ChNObject;
+import com.vrostov.chronon.objects.ChNObject;
+import com.vrostov.chronon.objects.maintenance.behavior.impl.NotMoveableMoveBehavior;
 import playn.core.Tile;
 
 /**
@@ -12,6 +13,8 @@ public class EnvironmentObject extends ChNObject {
 
     public EnvironmentObject(Tile tile) {
         super(tile);
+        moveBehavior=new NotMoveableMoveBehavior();
+
     }
 
 

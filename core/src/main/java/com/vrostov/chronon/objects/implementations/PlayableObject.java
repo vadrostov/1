@@ -1,6 +1,6 @@
 package com.vrostov.chronon.objects.implementations;
 
-import com.vrostov.chronon.ChNObject;
+import com.vrostov.chronon.objects.ChNObject;
 import com.vrostov.chronon.objects.maintenance.behavior.impl.ControlMoveBehavior;
 import com.vrostov.chronon.objects.maintenance.behavior.impl.PersUseBehavior;
 import playn.core.Tile;

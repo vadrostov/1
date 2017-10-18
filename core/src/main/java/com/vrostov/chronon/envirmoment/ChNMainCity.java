@@ -1,6 +1,6 @@
 package com.vrostov.chronon.envirmoment;
 
-import com.vrostov.chronon.ChNObject;
+import com.vrostov.chronon.objects.ChNObject;
 import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
 import com.vrostov.chronon.envirmoment.maintenance.CityPainter;
 import com.vrostov.chronon.envirmoment.maintenance.CityPhysics;
@@ -23,8 +23,15 @@ public class ChNMainCity {
         List<ChNObject> objects = new ArrayList<ChNObject>();
 
 
+        public int[] getTiles() {
+            return tiles;
+        }
 
-        int height() {
+        public void setTiles(int[] tiles) {
+            this.tiles = tiles;
+        }
+
+        public int height() {
             return tiles.length;
         }
 
@@ -34,7 +41,7 @@ public class ChNMainCity {
     private static final String[] tilesNames=new String[]{"block_wood", "block_wood"};
     private final Tile[] tiles=new Tile[tilesNames.length];
 
-    private MainCityValuesBean values;
+    private ValuesBean values;
 
     private CityPainter painter;
     private CityPhysics physics;
@@ -74,11 +81,7 @@ public class ChNMainCity {
         this.viewSize=platform.graphics().viewSize;
         this.cityWidth=width;
         this.cityHeight=height;
-        values=new MainCityValuesBean(viewSize);
-        this.painter=new CityPainter(values,platform);
-        this.physics=new CityPhysics();
-
-        loadImg();
+        values=new MainCityValuesBean();
 
         this.city=new Stack[cityHeight*cityWidth];
         int i=0;
@@ -89,6 +92,11 @@ public class ChNMainCity {
                 ++i;
             }
         }
+
+        this.painter=new CityPainter(values, city,platform);
+        this.physics=new CityPhysics();
+
+
 
     }
 

@@ -1,7 +1,6 @@
-package com.vrostov.chronon.envirmoment.maintnance;
+package com.vrostov.chronon.envirmoment.maintenance;
 
 import com.vrostov.chronon.envirmoment.ChNMainCity;
-import com.vrostov.chronon.envirmoment.ValuesBean;
 import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
 import playn.core.Image;
 import playn.core.Platform;

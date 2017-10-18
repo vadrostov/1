@@ -1,9 +1,10 @@
 package com.vrostov.chronon;
 
-import com.vrostov.chronon.objects.maintnanace.ChNObjectPosition;
+import com.vrostov.chronon.objects.maintenance.behavior.MessagerBehavior;
+import com.vrostov.chronon.objects.maintenance.behavior.MoveBehavior;
+import com.vrostov.chronon.objects.maintenance.behavior.UseBehavior;
 import playn.core.Tile;
 
-import javax.swing.text.Position;
 import com.vrostov.chronon.envirmoment.ChNMainCity.Stack;
 
 
@@ -23,6 +24,10 @@ public class ChNObject {
     private Stack stack;
     int lastUpdated;
     boolean resting;
+
+    protected MessagerBehavior messagerBehavior;
+    protected UseBehavior useBehavior;
+    protected MoveBehavior moveBehavior;
 
     public ChNObject(Tile tile) {
         this.tile = tile;
@@ -62,51 +67,51 @@ public class ChNObject {
 
 
     public double getVx() {
-        return vx;
+        return moveBehavior.getVx();
     }
 
     public void setVx(double vx) {
-        this.vx = vx;
+        moveBehavior.setVx(vx);
     }
 
     public double getVy() {
-        return vy;
+        return moveBehavior.getVy();
     }
 
     public void setVy(double vy) {
-        this.vy = vy;
+        moveBehavior.setVy(vy);
     }
 
     public double getVz() {
-        return vz;
+        return moveBehavior.getVz();
     }
 
     public void setVz(double vz) {
-        this.vz = vz;
+        moveBehavior.setVz(vz);
     }
 
     public double getAx() {
-        return ax;
+        return moveBehavior.getAx();
     }
 
     public void setAx(double ax) {
-        this.ax = ax;
+        moveBehavior.setAx(ax);
     }
 
     public double getAy() {
-        return ay;
+        return moveBehavior.getAy();
     }
 
     public void setAy(double ay) {
-        this.ay = ay;
+        moveBehavior.setAy(ay);
     }
 
     public double getAz() {
-        return az;
+        return moveBehavior.getAz();
     }
 
     public void setAz(double az) {
-        this.az = az;
+        moveBehavior.setAz(az);
     }
 
     public double getR() {
@@ -118,8 +123,8 @@ public class ChNObject {
     }
 
     public void setAxeleration(double ax, double ay, double az){
-        this.ax=ax;
-        this.ay=ay;
-        this.az=az;
+        moveBehavior.setAx(ax);
+        moveBehavior.setAy(ay);
+        moveBehavior.setAz(az);
     }
 }

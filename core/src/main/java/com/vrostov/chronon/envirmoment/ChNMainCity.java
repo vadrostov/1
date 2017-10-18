@@ -2,12 +2,11 @@ package com.vrostov.chronon.envirmoment;
 
 import com.vrostov.chronon.ChNObject;
 import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
-import com.vrostov.chronon.envirmoment.maintnance.CityPainter;
-import com.vrostov.chronon.envirmoment.maintnance.CityPhysics;
+import com.vrostov.chronon.envirmoment.maintenance.CityPainter;
+import com.vrostov.chronon.envirmoment.maintenance.CityPhysics;
 import playn.core.*;
 import pythagoras.f.IDimension;
 import react.RFuture;
-import react.Signal;
 import react.Slot;
 import react.UnitSlot;
 

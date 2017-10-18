@@ -223,12 +223,12 @@ public class ChNMainCity {
             }
         }
     }*/
+/*
 
     public void setViewOrigin(int x, int y, int z){
-        viewOriginX=x;
-        viewOriginY=y;
-        viewOriginZ=z;
+        painter.setViewOrigin();
     }
+*/
 
     private Stack stackForObject(ChNObject o) {
         if ((o.x < 0) || (o.y < 0) || (o.x >= cityWidth) || (o.y >= cityHeight)) {

@@ -76,7 +76,7 @@ public class ChNGame extends SceneGame{
         rootLayer.add(gameLayer=new Layer() {
             @Override
             protected void paintImpl(Surface surface) {
-                if (mainPers!= null) city.setViewOrigin((int)mainPers.x,(int)mainPers.y, (int)mainPers.z);
+                if (mainPers!= null) city.getPainter().setViewOrigin((int)mainPers.x,(int)mainPers.y, (int)mainPers.z);
                 surface.clear();
                 city.paint(surface, alpha);
 

@@ -27,6 +27,7 @@ public class CityPainter {
 
     Platform platform;
     boolean loaded;
+    private double viewOriginX, viewOriginY, viewOriginZ;
 
     public CityPainter(ValuesBean valuesBean, ChNMainCity.Stack[] world, Platform platform) {
         this.valuesBean = valuesBean;
@@ -99,19 +100,28 @@ public class CityPainter {
     }
 
     private double pixelToWorldX(Surface surf, float x) {
-        return 0;
+        double center = viewSize.width() * 0.5;
+        return (int) (((viewOriginX * valuesBean.getTileWidth()) + x - center) / valuesBean.getTileWidth());
     }
 
     private double pixelToWorldY(Surface surf, float y, double z) {
-        return 0;
+        double center = viewSize.height() * 0.5;
+        return (y + (viewOriginY * valuesBean.getTileHeight() - viewOriginZ * valuesBean.getTileDepth())
+                + (z * valuesBean.getTileDepth()) - center)
+                / valuesBean.getTileHeight();
     }
 
     private int worldToPixelX(Surface surface, double x){
-        return 0;
+        double center = viewSize.width() * 0.5;
+        return (int) (center - (viewOriginX * valuesBean.getTileWidth()) + x * valuesBean.getTileWidth());
     }
 
+
     private int worldToPixelY(Surface surface, double y, double z){
-        return 0;
+        double center = viewSize.height() * 0.5;
+        return (int) (center
+                - (viewOriginY * valuesBean.getTileHeight() - viewOriginZ * valuesBean.getTileDepth()) + y
+                * valuesBean.getTileHeight() - z * valuesBean.getTileDepth());
     }
 
     private void paintObjects(Surface surface, ChNMainCity.Stack stack, int tz, float alpha){
@@ -146,6 +156,13 @@ public class CityPainter {
 
     private int height(int tx, int ty) {
         return stack(tx, ty).height();
+    }
+
+
+    public void setViewOrigin(double x, double y, double z) {
+        viewOriginX = x;
+        viewOriginY = y;
+        viewOriginZ = z;
     }
 
     private ChNMainCity.Stack stack(int tx, int ty) {

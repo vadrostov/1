@@ -9,6 +9,10 @@ public class PeriodicMoveBehavior implements MoveBehavior {
     public double vx, vy, vz;
     public double ax, ay, az;
 
+    public boolean isMoveable() {
+        return false;
+    }
+
     public double getVx() {
         return vx;
     }

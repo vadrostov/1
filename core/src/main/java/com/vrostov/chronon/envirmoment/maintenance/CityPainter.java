@@ -87,7 +87,8 @@ public class CityPainter {
                             continue;
                         }
 
-                        surface.draw(valuesBean.getTiles()[stack.getTiles()[tz]], px, py);
+                        int t=stack.getTiles()[tz];
+                        surface.draw(valuesBean.getTiles()[t], px, py);
                         //paintShadow(surf, tx, ty, px, py);
                     } else if (tz >= stack.height()) {
                         // Paint the objects in this stack.

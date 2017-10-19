@@ -28,7 +28,15 @@ public class MainCityValuesBean implements ValuesBean{
     private final int width=16;
     private final int height=16;
 
-    public  final String[] tilesNames=new String[]{"block_wood", "block_wood"};
+    private static final String[] tilesNames = new String[] { "block_brown",
+            "block_dirt", "block_grass", "block_plain", "block_stone", "block_wall",
+            "block_water", "block_wood",
+
+            "ramp_north", "ramp_east", "ramp_south", "ramp_west",
+
+            "roof_north", "roof_northeast", "roof_east", "roof_southeast",
+            "roof_south", "roof_southwest", "roof_west", "roof_northwest", };
+
     private final Tile[] tiles=new Tile[tilesNames.length];
 
     public MainCityValuesBean() {

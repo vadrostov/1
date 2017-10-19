@@ -19,7 +19,7 @@ public class ChNGame extends SceneGame{
     ChNMainCity city;
     Layer gameLayer;
     private ChNObject mainPers;
-    boolean controlLeft, controlRight, controlUp, controlDown;
+    boolean controlLeft, controlRight, controlUp, controlDown, controlJump;
     private float frameAlpha;
 
     private static Map<Key, Integer> ADD_TILE_KEYS = new HashMap<Key, Integer>();
@@ -36,40 +36,44 @@ public class ChNGame extends SceneGame{
         super(plat, 33);
 
         plat.input().keyboardEvents.connect(new Keyboard.KeySlot() {
-            @Override
-            public void onEmit(Keyboard.KeyEvent keyEvent) {
-                if (keyEvent.down){
-                    Integer tileIdX=ADD_TILE_KEYS.get(keyEvent.key);
-/*                    if (tileIdX!=null){
-                        addTile(mainPers.getPosition().getX(), mainPers.getPosition().getY(), tileIdX);
+            @Override public void onEmit (Keyboard.KeyEvent event) {
+                if (event.down) {
+                    Integer tileIdx = ADD_TILE_KEYS.get(event.key);
+                    if (tileIdx != null) {
+                        addTile((int) mainPers.x, (int) mainPers.y, tileIdx);
                         return;
-                    }*/
-
-                    switch (keyEvent.key){
-                        case W:
-                            controlUp=keyEvent.down;
-                            break;
-                        case A:
-                            controlLeft=keyEvent.down;
-                            break;
-                        case S:
-                            controlDown=keyEvent.down;
-                            break;
-                        case D:
-                            controlRight=keyEvent.down;
-                            break;
-                        default:
-                            break;
                     }
+                }
+
+                switch (event.key) {
+                    case SPACE:
+                        if (event.down) controlJump = true;
+                        break;
+
+                    case LEFT:
+                        controlLeft = event.down;
+                        break;
+                    case UP:
+                        controlUp = event.down;
+                        break;
+                    case RIGHT:
+                        controlRight = event.down;
+                        break;
+                    case DOWN:
+                        controlDown = event.down;
+                        break;
+                    default:
+                        break; // nada
                 }
             }
         });
 
+
         int cx=16, cy=16;
         city=new ChNMainCity(plat, cy, cx);
-        for (int y=0; y<cy;++y){
-            for (int x=0;x<cx;++x){
-              city.getPainter().addTile(x,y,1);
+        for (int y = 0; y < 16; ++y) {
+            for (int x = 0; x < 16; ++x) {
+                city.getPainter().addTile(x, y, 2);
             }
         }
 

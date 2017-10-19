@@ -174,4 +174,21 @@ public class CityPainter {
         return world[ty * valuesBean.getWidth() + tx];
     }
 
+    public void addTile(int tx, int ty, int type){
+
+
+
+        ChNMainCity.Stack stack = stack(tx, ty);
+
+        int len = stack.getTiles().length;
+        if (len == valuesBean.getMAX_STACK_HEIGHT()) {
+            return;
+        }
+
+        int[] newTiles = new int[len + 1];
+        System.arraycopy(stack.getTiles(), 0, newTiles, 0, len);
+        stack.setTiles(newTiles);
+        stack.getTiles()[len] = type;
+    }
+
 }

@@ -69,7 +69,7 @@ public class ChNGame extends SceneGame{
         city=new ChNMainCity(plat, cy, cx);
         for (int y=0; y<cy;++y){
             for (int x=0;x<cx;++x){
-                city.addTile(x,y,1);
+              city.getPainter().addTile(x,y,1);
             }
         }
 
@@ -121,6 +121,6 @@ public class ChNGame extends SceneGame{
 
     private void addTile(int x, int y, int type){
 
-        city.addTile(x,y,type);
+        city.getPainter().addTile(x,y,type);
     }
 }

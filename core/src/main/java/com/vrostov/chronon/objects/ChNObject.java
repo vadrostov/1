@@ -19,7 +19,7 @@ public class ChNObject {
     public double x,y,z;
     private double r;
     private Stack stack;
-    int lastUpdated;
+    private int lastUpdated;
     boolean resting;
 
     protected MessagerBehavior messagerBehavior;
@@ -61,6 +61,11 @@ public class ChNObject {
         this.z=z;
     }
 
+    public void saveOldPos() {
+        this.ox = x;
+        this.oy = y;
+        this.oz = z;
+    }
 
 
     public double getVx() {
@@ -123,5 +128,21 @@ public class ChNObject {
         moveBehavior.setAx(ax);
         moveBehavior.setAy(ay);
         moveBehavior.setAz(az);
+    }
+
+    public int getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(int lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public boolean isResting() {
+        return resting;
+    }
+
+    public void setResting(boolean resting) {
+        this.resting = resting;
     }
 }

@@ -22,6 +22,9 @@ public class ChNMainCity {
         private int[] tiles;
         List<ChNObject> objects = new ArrayList<ChNObject>();
 
+        public List<ChNObject> getObjects() {
+            return objects;
+        }
 
         public int[] getTiles() {
             return tiles;
@@ -94,7 +97,7 @@ public class ChNMainCity {
         }
 
         this.painter=new CityPainter(values, city,platform);
-        this.physics=new CityPhysics();
+        this.physics=new CityPhysics(values, city, platform);
 
 
 
@@ -187,14 +190,16 @@ public class ChNMainCity {
         }
 
     }*/
+/*
 
     //вычисляет высоту для плитки по координатам
     private int height(int tx, int ty) {
         return stack(tx, ty).height();
     }
+*/
 
     //добавляет плитку в
-    public void addTile(int tx, int ty, int type){
+  /*  public void addTile(int tx, int ty, int type){
         Stack stack=createStack(tx, ty);
         int lenght=stack.tiles.length;
         if (lenght==MAX_STACK_HEIGHT){
@@ -206,15 +211,15 @@ public class ChNMainCity {
         stack.tiles[lenght]=type;
 
 
-    }
+    }*/
 
-    private Stack createStack(int tx, int ty) {
+  /*  private Stack createStack(int tx, int ty) {
         if ((tx < 0) || (tx >= cityWidth) || (ty < 0) || (ty >= cityHeight)) {
             return EMPTY_STACK;
         }
 
         return city[ty * cityWidth + tx];
-    }
+    }*/
 
     /*public void updatePhysics(double delta){
         for (int ty=0; ty<cityHeight; ++ty){
@@ -230,28 +235,26 @@ public class ChNMainCity {
     }
 */
 
-    private Stack stackForObject(ChNObject o) {
+   /* private Stack stackForObject(ChNObject o) {
         if ((o.x < 0) || (o.y < 0) || (o.x >= cityWidth) || (o.y >= cityHeight)) {
             return EMPTY_STACK;
         }
 
         return stack((int) o.x, (int) o.y);
     }
-
+*/
     public void addObject(ChNObject o) {
-        Stack stack = stackForObject(o);
-        stack.objects.add(o);
-        o.setStack(stack);
+        physics.addObject(o);
     }
 
 
-    private Stack stack(int tx, int ty) {
+  /*  private Stack stack(int tx, int ty) {
         if ((tx < 0) || (tx >= cityWidth) || (ty < 0) || (ty >= cityHeight)) {
             return EMPTY_STACK;
         }
 
         return city[ty * cityWidth + tx];
-    }
+    }*/
 
   /*  private void updatePhysics(Stack stack, double delta){
 
@@ -295,7 +298,7 @@ public class ChNMainCity {
 
     }*/
 
-    private void loadImg(){
+  /*  private void loadImg(){
 
         List<RFuture<Image>> wait=new ArrayList<RFuture<Image>>();
 
@@ -318,7 +321,7 @@ public class ChNMainCity {
         });
 
     }
-
+*/
 
  /*   private void moveBy(ChNObject chNObject, double dx, double dy*//*, double dz*//*){
         int tx=(int) chNObject.x, ty=(int) chNObject.y;

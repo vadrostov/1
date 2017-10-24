@@ -1,4 +1,4 @@
-package com.vrostov.chronon.envirmoment;
+package com.vrostov.chronon.environment;
 
 import playn.core.Tile;
 

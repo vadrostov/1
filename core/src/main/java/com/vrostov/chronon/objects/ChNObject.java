@@ -1,11 +1,11 @@
 package com.vrostov.chronon.objects;
 
+import com.vrostov.chronon.environment.EnvironmentStack;
 import com.vrostov.chronon.objects.maintenance.behavior.MessagerBehavior;
 import com.vrostov.chronon.objects.maintenance.behavior.MoveBehavior;
 import com.vrostov.chronon.objects.maintenance.behavior.UseBehavior;
 import playn.core.Tile;
 
-import com.vrostov.chronon.envirmoment.ChNMainCity.Stack;
 
 
 /**
@@ -18,7 +18,7 @@ public class ChNObject {
     public double ox, oy, oz;
     public double x,y,z;
     private double r;
-    private Stack stack;
+    private EnvironmentStack stack;
     private int lastUpdated;
     boolean resting;
 
@@ -31,11 +31,11 @@ public class ChNObject {
 
     }
 
-    public Stack getStack() {
+    public EnvironmentStack getStack() {
         return stack;
     }
 
-    public void setStack(Stack stack) {
+    public void setStack(EnvironmentStack stack) {
         this.stack = stack;
     }
 

@@ -1,6 +1,6 @@
 package com.vrostov.chronon;
 
-import com.vrostov.chronon.envirmoment.ChNMainCity;
+import com.vrostov.chronon.environment.ChNMainCity;
 import com.vrostov.chronon.objects.ChNObject;
 import com.vrostov.chronon.objects.implementations.PlayableObject;
 import playn.core.*;
@@ -87,11 +87,11 @@ public class ChNGame extends SceneGame{
             }
         });
 
-        plat.assets().getImage("/images/chn.png").state.onSuccess(new Slot<Image>() {
+        plat.assets().getImage("/images/character_cat_girl.png").state.onSuccess(new Slot<Image>() {
             public void onEmit(Image image) {
                 mainPers=new PlayableObject(image.texture());
                 mainPers.setR(0.3);
-                mainPers.setPos(2,2,2);
+                mainPers.setPos(2,2,1);
                 city.addObject(mainPers);
                 update.connect(new Slot<Clock>() {
                     public void onEmit(Clock clock) {

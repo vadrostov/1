@@ -1,8 +1,7 @@
-package com.vrostov.chronon.envirmoment.maintenance;
+package com.vrostov.chronon.environment.maintenance;
 
-import com.vrostov.chronon.envirmoment.ChNMainCity;
-import com.vrostov.chronon.envirmoment.ValuesBean;
-import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
+import com.vrostov.chronon.environment.EnvironmentStack;
+import com.vrostov.chronon.environment.ValuesBean;
 import playn.core.Image;
 import playn.core.Platform;
 import playn.core.Surface;
@@ -21,7 +20,7 @@ public class CityPainter {
 
     ValuesBean valuesBean;
 
-    ChNMainCity.Stack[] world;
+    EnvironmentStack[] world;
 
     private final IDimension viewSize;
 
@@ -29,7 +28,7 @@ public class CityPainter {
     boolean loaded;
     private double viewOriginX, viewOriginY, viewOriginZ;
 
-    public CityPainter(ValuesBean valuesBean, ChNMainCity.Stack[] world, Platform platform) {
+    public CityPainter(ValuesBean valuesBean, EnvironmentStack[] world, Platform platform) {
         this.valuesBean = valuesBean;
         this.world = world;
         this.platform = platform;
@@ -68,13 +67,13 @@ public class CityPainter {
         for (int tz = 0; tz < valuesBean.getMAX_STACK_HEIGHT(); ++tz) {
             for (int ty = startY; ty <= endY; ++ty) {
                 for (int tx = startX; tx <= endX; ++tx) {
-                    ChNMainCity.Stack stack = world[ty * valuesBean.getWidth() + tx];
+                    EnvironmentStack stack = world[ty * valuesBean.getWidth() + tx];
 
-                    if (tz < stack.height()) {
+                    if (tz < stack.stackHeight()) {
                         // Draw the tile and its shadows.
 
                         // Skip obviously hidden tiles.
-                        if ((tz < stack.height() - 1) && (height(tx, ty + 1) > tz)) {
+                        if ((tz < stack.stackHeight() - 1) && (height(tx, ty + 1) > tz)) {
                             continue;
                         }
 
@@ -90,7 +89,7 @@ public class CityPainter {
                         int t=stack.getTiles()[tz];
                         surface.draw(valuesBean.getTiles()[t], px, py);
                         //paintShadow(surf, tx, ty, px, py);
-                    } else if (tz >= stack.height()) {
+                    } else if (tz >= stack.stackHeight()) {
                         // Paint the objects in this stack.
                         paintObjects(surface, stack, tz, alpha);
                     }
@@ -125,7 +124,7 @@ public class CityPainter {
                 * valuesBean.getTileHeight() - z * valuesBean.getTileDepth());
     }
 
-    private void paintObjects(Surface surface, ChNMainCity.Stack stack, int tz, float alpha){
+    private void paintObjects(Surface surface, EnvironmentStack stack, int tz, float alpha){
 
     }
 
@@ -133,7 +132,7 @@ public class CityPainter {
         List<RFuture<Image>> wait=new ArrayList<RFuture<Image>>();
 
         for(int i=0;i<valuesBean.getTiles().length; ++i){
-            final int idx=1;
+            final int idx=i;
             Image tile=platform.assets().getImage(imageRes(valuesBean.getTilesNames()[i]));
             tile.state.onSuccess(new Slot<Image>() {
                 public void onEmit(Image image) {
@@ -156,7 +155,7 @@ public class CityPainter {
     }
 
     private int height(int tx, int ty) {
-        return stack(tx, ty).height();
+        return stack(tx, ty).stackHeight();
     }
 
 
@@ -166,9 +165,9 @@ public class CityPainter {
         viewOriginZ = z;
     }
 
-    private ChNMainCity.Stack stack(int tx, int ty) {
+    private EnvironmentStack stack(int tx, int ty) {
         if ((tx < 0) || (tx >= valuesBean.getWidth()) || (ty < 0) || (ty >= valuesBean.getHeight())) {
-            ChNMainCity.Stack emptyStack=new ChNMainCity.Stack();
+            EnvironmentStack emptyStack=new EnvironmentStack();
             emptyStack.setTiles(new int[0]);
         }
 
@@ -179,7 +178,7 @@ public class CityPainter {
 
 
 
-        ChNMainCity.Stack stack = stack(tx, ty);
+        EnvironmentStack stack = stack(tx, ty);
 
         int len = stack.getTiles().length;
         if (len == valuesBean.getMAX_STACK_HEIGHT()) {

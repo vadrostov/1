@@ -1,9 +1,7 @@
-package com.vrostov.chronon.envirmoment.beans;
+package com.vrostov.chronon.environment.beans;
 
-import com.vrostov.chronon.envirmoment.ChNMainCity;
-import com.vrostov.chronon.envirmoment.ValuesBean;
+import com.vrostov.chronon.environment.ValuesBean;
 import playn.core.Tile;
-import pythagoras.f.IDimension;
 
 /**
  * Created by vrostov on 18.10.2017.

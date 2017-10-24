@@ -1,24 +1,18 @@
-package com.vrostov.chronon.envirmoment;
+package com.vrostov.chronon.environment;
 
 import com.vrostov.chronon.objects.ChNObject;
-import com.vrostov.chronon.envirmoment.beans.MainCityValuesBean;
-import com.vrostov.chronon.envirmoment.maintenance.CityPainter;
-import com.vrostov.chronon.envirmoment.maintenance.CityPhysics;
+import com.vrostov.chronon.environment.beans.MainCityValuesBean;
+import com.vrostov.chronon.environment.maintenance.CityPainter;
+import com.vrostov.chronon.environment.maintenance.CityPhysics;
 import playn.core.*;
 import pythagoras.f.IDimension;
-import react.RFuture;
-import react.Slot;
-import react.UnitSlot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vrostov on 29.09.2017.
  */
 public class ChNMainCity {
 
-    public static class Stack {
+ /*   public static class Stack {
         private int[] tiles;
         List<ChNObject> objects = new ArrayList<ChNObject>();
 
@@ -38,7 +32,7 @@ public class ChNMainCity {
             return tiles.length;
         }
 
-    }
+    }*/
 
 
     private static final String[] tilesNames=new String[]{"block_wood", "block_wood"};
@@ -55,7 +49,7 @@ public class ChNMainCity {
     private static final int TILE_DEPTH=40;
     private static final int TILE_BASE = 90;
     private static final int TILE_IMAGE_HEIGHT = 170;
-    private static final Stack EMPTY_STACK;
+    private static final EnvironmentStack EMPTY_STACK;
     private static final int MAX_STACK_HEIGHT = 35;
 
     private static final int OBJECT_BASE=30;
@@ -67,8 +61,8 @@ public class ChNMainCity {
     private double viewOriginX, viewOriginY, viewOriginZ;
 
     static {
-        EMPTY_STACK = new Stack();
-        EMPTY_STACK.tiles = new int[0];
+        EMPTY_STACK = new EnvironmentStack();
+        EMPTY_STACK.setTiles(new int[0]);
     }
 
 
@@ -77,7 +71,7 @@ public class ChNMainCity {
     int cityWidth, cityHeight;
     boolean loaded;
 
-    private Stack[] city;
+    private EnvironmentStack[] city;
 
     public ChNMainCity(Platform platform, int width, int height) {
         this.platform = platform;
@@ -86,12 +80,12 @@ public class ChNMainCity {
         this.cityHeight=height;
         values=new MainCityValuesBean();
 
-        this.city=new Stack[cityHeight*cityWidth];
+        this.city=new EnvironmentStack[cityHeight*cityWidth];
         int i=0;
         for (int ty=0;ty<cityHeight;++ty){
             for(int tx=0; tx<cityWidth;++tx){
-                this.city[i]=new Stack();
-                city[i].tiles=new int[0];
+                this.city[i]=new EnvironmentStack();
+                city[i].setTiles(new int[0]);
                 ++i;
             }
         }

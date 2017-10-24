@@ -1,8 +1,8 @@
-package com.vrostov.chronon.envirmoment.maintenance;
+package com.vrostov.chronon.environment.maintenance;
 
-import com.vrostov.chronon.envirmoment.ValuesBean;
+import com.vrostov.chronon.environment.EnvironmentStack;
+import com.vrostov.chronon.environment.ValuesBean;
 import com.vrostov.chronon.objects.ChNObject;
-import com.vrostov.chronon.envirmoment.ChNMainCity;
 import playn.core.Platform;
 
 import static java.lang.Math.max;
@@ -13,13 +13,13 @@ import static java.lang.Math.max;
 public class CityPhysics {
 
     private ValuesBean values;
-    ChNMainCity.Stack[] world;
+    EnvironmentStack[] world;
     Platform platform;
 
 
     private int updateCounter = -1;
 
-    public CityPhysics(ValuesBean values, ChNMainCity.Stack[] world, Platform platform) {
+    public CityPhysics(ValuesBean values, EnvironmentStack[] world, Platform platform) {
         this.values = values;
         this.world = world;
         this.platform = platform;
@@ -31,21 +31,21 @@ public class CityPhysics {
                 updatePhysics(stack(tx, ty), delta);
             }
         }
-        ChNMainCity.Stack emptyStack=new ChNMainCity.Stack();
+        EnvironmentStack emptyStack=new EnvironmentStack();
         emptyStack.setTiles(new int[0]);
         updatePhysics(emptyStack, delta);
 
         ++updateCounter;
     }
 
-    private void updatePhysics(ChNMainCity.Stack stack, double delta){
+    private void updatePhysics(EnvironmentStack stack, double delta){
         for (int i = 0; i < stack.getObjects().size(); ++i) {
             // Run physics.
             ChNObject o = stack.getObjects().get(i);
             updatePhysics(o, delta);
 
             // Re-sort.
-            ChNMainCity.Stack newStack = stackForObject(o);
+            EnvironmentStack newStack = stackForObject(o);
             if (stack != newStack) {
                 stack.getObjects().remove(i--);
                 newStack.getObjects().add(o);
@@ -63,7 +63,7 @@ public class CityPhysics {
         o.saveOldPos();
 
         // Gravity & friction.
-        if (o.z > o.getStack().height()) {
+        if (o.z > o.getStack().stackHeight()) {
             o.setAz(o.getAz()+delta*values.getGRAVITY());
         }
 
@@ -240,9 +240,9 @@ public class CityPhysics {
         }
     }
 
-    private ChNMainCity.Stack stack(int tx, int ty) {
+    private EnvironmentStack stack(int tx, int ty) {
         if ((tx < 0) || (tx >= values.getWidth()) || (ty < 0) || (ty >= values.getHeight())) {
-            ChNMainCity.Stack emptyStack=new ChNMainCity.Stack();
+            EnvironmentStack emptyStack=new EnvironmentStack();
             emptyStack.setTiles(new int[0]);
         }
 
@@ -250,14 +250,14 @@ public class CityPhysics {
     }
 
     public void addObject(ChNObject o) {
-        ChNMainCity.Stack stack = stackForObject(o);
+        EnvironmentStack stack = stackForObject(o);
         stack.getObjects().add(o);
         o.setStack(stack);
     }
 
-    private ChNMainCity.Stack stackForObject(ChNObject o) {
+    private EnvironmentStack stackForObject(ChNObject o) {
         if ((o.x < 0) || (o.y < 0) || (o.x >= values.getWidth()) || (o.y >= values.getHeight())) {
-            ChNMainCity.Stack emptyStack=new ChNMainCity.Stack();
+            EnvironmentStack emptyStack=new EnvironmentStack();
             emptyStack.setTiles(new int[0]);
             return emptyStack;
         }
@@ -266,7 +266,7 @@ public class CityPhysics {
     }
 
     private int height(int tx, int ty) {
-        return stack(tx, ty).height();
+        return stack(tx, ty).stackHeight();
     }
 
 

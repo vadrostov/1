@@ -16,7 +16,7 @@ public class ChNObject {
     public Tile tile;
 
     public double ox, oy, oz;
-    public double x,y,z;
+    protected double x,y,z;
     private double r;
     private EnvironmentStack stack;
     private int lastUpdated;
@@ -144,5 +144,53 @@ public class ChNObject {
 
     public void setResting(boolean resting) {
         this.resting = resting;
+    }
+
+    public double getOx() {
+        return ox;
+    }
+
+    public void setOx(double ox) {
+        this.ox = ox;
+    }
+
+    public double getOy() {
+        return oy;
+    }
+
+    public void setOy(double oy) {
+        this.oy = oy;
+    }
+
+    public double getOz() {
+        return oz;
+    }
+
+    public void setOz(double oz) {
+        this.oz = oz;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
     }
 }

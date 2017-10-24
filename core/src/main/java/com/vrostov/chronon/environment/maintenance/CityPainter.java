@@ -2,6 +2,7 @@ package com.vrostov.chronon.environment.maintenance;
 
 import com.vrostov.chronon.environment.EnvironmentStack;
 import com.vrostov.chronon.environment.ValuesBean;
+import com.vrostov.chronon.objects.ChNObject;
 import playn.core.Image;
 import playn.core.Platform;
 import playn.core.Surface;
@@ -125,7 +126,15 @@ public class CityPainter {
     }
 
     private void paintObjects(Surface surface, EnvironmentStack stack, int tz, float alpha){
-
+        for (ChNObject o : stack.getObjects()) {
+            if ((int) o.getZ() == tz) {
+                int px = worldToPixelX(surface, o.x(alpha));
+                int py = worldToPixelY(surface, o.y(alpha), o.z(alpha));
+                float baseX = o.tile.width() / 2;
+                float baseY = o.tile.height() - valuesBean.getObjectBase();
+                surface.draw(o.tile, px - baseX, py - baseY);
+            }
+        }
     }
 
     private void loadImg(){

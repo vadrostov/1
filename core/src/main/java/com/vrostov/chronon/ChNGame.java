@@ -2,6 +2,7 @@ package com.vrostov.chronon;
 
 import com.vrostov.chronon.environment.ChNMainCity;
 import com.vrostov.chronon.objects.ChNObject;
+import com.vrostov.chronon.objects.implementations.NPCObject;
 import com.vrostov.chronon.objects.implementations.PlayableObject;
 import playn.core.*;
 import playn.scene.Layer;
@@ -16,9 +17,11 @@ import java.util.Map;
  */
 public class ChNGame extends SceneGame{
 
+
+    protected double viewRadius;
     ChNMainCity city;
     Layer gameLayer;
-    private ChNObject mainPers;
+    private PlayableObject mainPers;
     boolean controlLeft, controlRight, controlUp, controlDown, controlJump;
     private float frameAlpha;
 
@@ -37,13 +40,13 @@ public class ChNGame extends SceneGame{
 
         plat.input().keyboardEvents.connect(new Keyboard.KeySlot() {
             @Override public void onEmit (Keyboard.KeyEvent event) {
-                if (event.down) {
+               /* if (event.down) {
                     Integer tileIdx = ADD_TILE_KEYS.get(event.key);
                     if (tileIdx != null) {
                         addTile((int) mainPers.x, (int) mainPers.y, tileIdx);
                         return;
                     }
-                }
+                }*/
 
                 switch (event.key) {
                     case SPACE:
@@ -80,7 +83,7 @@ public class ChNGame extends SceneGame{
         rootLayer.add(gameLayer=new Layer() {
             @Override
             protected void paintImpl(Surface surface) {
-                if (mainPers!= null) city.getPainter().setViewOrigin((int)mainPers.x,(int)mainPers.y, (int)mainPers.z);
+                if (mainPers!= null) city.getPainter().setViewOrigin((int)mainPers.getX(),(int)mainPers.getY(), (int)mainPers.getZ());
                 surface.clear();
                 city.paint(surface, alpha);
 
@@ -106,6 +109,17 @@ public class ChNGame extends SceneGame{
                 });
             }
         });
+        plat.assets().getImage("/images/gem_green.png").state.onSuccess(new Slot<Image>() {
+            public void onEmit(Image event) {
+                NPCObject object=new NPCObject(event.texture());
+                object.setPos(11,11,1);
+                city.addObject(object);
+                mainPers.registerObserver(object);
+                object.setViewRad(11);
+
+
+            }
+        });
 
     }
 
@@ -126,5 +140,13 @@ public class ChNGame extends SceneGame{
     private void addTile(int x, int y, int type){
 
         city.getPainter().addTile(x,y,type);
+    }
+
+    public double getViewRadius() {
+        return viewRadius;
+    }
+
+    public void setViewRadius(double viewRadius) {
+        this.viewRadius = viewRadius;
     }
 }

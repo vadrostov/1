@@ -11,9 +11,10 @@ import playn.core.Tile;
  */
 public class NPCObject extends ChNObject implements ObsForObjectObserver{
 
-    double viewRad;
+    double viewRad=5;
     boolean messaging=false;
-
+    Tile secondtile;
+    Tile firsttile;
 
 
 
@@ -29,8 +30,9 @@ public class NPCObject extends ChNObject implements ObsForObjectObserver{
         double katX=Math.abs(myx-x), katY=Math.abs(myy-y);
         double hip=Math.sqrt(Math.pow(katX,2)+ Math.pow(katY,2));
         if (hip<=viewRad){
-
+            this.setTile(secondtile);
         }
+        else this.setTile(firsttile);
 
     }
 
@@ -44,5 +46,21 @@ public class NPCObject extends ChNObject implements ObsForObjectObserver{
 
     private void setTile(Tile tile){
         this.tile=tile;
+    }
+
+    public Tile getSecondtile() {
+        return secondtile;
+    }
+
+    public void setSecondtile(Tile secondtile) {
+        this.secondtile = secondtile;
+    }
+
+    public Tile getFirsttile() {
+        return firsttile;
+    }
+
+    public void setFirsttile(Tile firsttile) {
+        this.firsttile = firsttile;
     }
 }

@@ -24,6 +24,7 @@ public class ChNGame extends SceneGame{
     private PlayableObject mainPers;
     boolean controlLeft, controlRight, controlUp, controlDown, controlJump;
     private float frameAlpha;
+    NPCObject object;
 
     private static Map<Key, Integer> ADD_TILE_KEYS = new HashMap<Key, Integer>();
     static {
@@ -80,12 +81,20 @@ public class ChNGame extends SceneGame{
             }
         }
 
+
         rootLayer.add(gameLayer=new Layer() {
             @Override
             protected void paintImpl(Surface surface) {
                 if (mainPers!= null) city.getPainter().setViewOrigin((int)mainPers.getX(),(int)mainPers.getY(), (int)mainPers.getZ());
                 surface.clear();
                 city.paint(surface, alpha);
+
+            }
+        });
+
+        rootLayer.add(new Layer() {
+            @Override
+            protected void paintImpl(Surface surface) {
 
             }
         });
@@ -109,15 +118,23 @@ public class ChNGame extends SceneGame{
                 });
             }
         });
+
         plat.assets().getImage("/images/gem_green.png").state.onSuccess(new Slot<Image>() {
             public void onEmit(Image event) {
-                NPCObject object=new NPCObject(event.texture());
+                object=new NPCObject(event.texture());
                 object.setPos(11,11,1);
                 city.addObject(object);
                 mainPers.registerObserver(object);
-                object.setViewRad(11);
+                object.setViewRad(3);
+                object.setFirsttile(event.texture());
 
 
+            }
+        });
+        final Image img2=plat.assets().getImage("/images/gem_blue.png");
+        img2.state.onSuccess(new Slot<Image>() {
+            public void onEmit(Image image) {
+                object.setSecondtile(img2.texture());
             }
         });
 

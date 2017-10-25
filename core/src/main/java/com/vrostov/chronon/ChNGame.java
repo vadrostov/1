@@ -2,6 +2,7 @@ package com.vrostov.chronon;
 
 import com.vrostov.chronon.environment.ChNMainCity;
 import com.vrostov.chronon.objects.ChNObject;
+import com.vrostov.chronon.objects.ObsForObjectObserver;
 import com.vrostov.chronon.objects.implementations.NPCObject;
 import com.vrostov.chronon.objects.implementations.PlayableObject;
 import playn.core.*;
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * Created by vrostov on 29.09.2017.
  */
-public class ChNGame extends SceneGame{
+public class ChNGame extends SceneGame implements ObsForObjectObserver{
 
 
     protected double viewRadius;
@@ -165,5 +166,9 @@ public class ChNGame extends SceneGame{
 
     public void setViewRadius(double viewRadius) {
         this.viewRadius = viewRadius;
+    }
+
+    public void update(double x, double y) {
+
     }
 }
